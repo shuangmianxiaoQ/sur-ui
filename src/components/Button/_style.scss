@@ -10,6 +10,7 @@
   background-image: none;
   border: $btn-border-width solid transparent;
   box-shadow: $btn-box-shadow;
+  outline: none;
   cursor: pointer;
   transition: $btn-transition;
   @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $border-radius);
@@ -43,7 +44,7 @@
 }
 
 .btn-default {
-  @include button-style($white, $gray-400, $body-color, $white, $primary);
+  @include button-style($white, $gray-400, $body-color, $white, $primary, $primary);
 }
 
 .btn-link {

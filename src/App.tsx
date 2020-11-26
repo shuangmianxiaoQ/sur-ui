@@ -3,18 +3,20 @@ import Button, { ButtonSize, ButtonType } from './components/Button/button';
 function App() {
   return (
     <div>
-      <Button>Button</Button>
+      <Button autoFocus className="custom">
+        Button
+      </Button>
       <Button disabled>Disabled Button</Button>
-      <Button type={ButtonType.Primary} size={ButtonSize.Large}>
+      <Button btnType={ButtonType.Primary} size={ButtonSize.Large} onClick={() => alert(123)}>
         Large Primary
       </Button>
-      <Button type={ButtonType.Danger} size={ButtonSize.Small}>
+      <Button btnType={ButtonType.Danger} size={ButtonSize.Small} >
         Small Danger
       </Button>
-      <Button type={ButtonType.Link} href="https://www.baidu.com">
+      <Button btnType={ButtonType.Link} href="https://www.baidu.com" target="_blank">
         Link
       </Button>
-      <Button type={ButtonType.Link} href="https://www.baidu.com" disabled>
+      <Button btnType={ButtonType.Link} href="https://www.baidu.com" disabled>
         Disabled Link
       </Button>
     </div>

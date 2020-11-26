@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC, ReactNode } from 'react';
 import cx from 'classnames';
 
 export enum ButtonType {
@@ -15,37 +15,42 @@ export enum ButtonSize {
 
 interface BaseButtonProps {
   className?: string;
-  type?: ButtonType;
+  btnType?: ButtonType;
   size?: ButtonSize;
   href?: string;
   disabled?: boolean;
   children?: ReactNode;
 }
 
-const Button: FC<BaseButtonProps> = ({
+type NativeButtonProps = BaseButtonProps & ButtonHTMLAttributes<HTMLElement>;
+type AnchorButtonProps = BaseButtonProps & AnchorHTMLAttributes<HTMLElement>;
+export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>;
+
+const Button: FC<ButtonProps> = ({
   className,
-  type = ButtonType.Default,
+  btnType = ButtonType.Default,
   size,
   href,
   disabled = false,
   children,
+  ...restProps
 }) => {
-  const btnClass = cx('btn', {
-    [`btn-${type}`]: type,
+  const btnClass = cx('btn', className, {
+    [`btn-${btnType}`]: btnType,
     [`btn-${size}`]: size,
-    disabled: type === ButtonType.Link && disabled,
+    disabled: btnType === ButtonType.Link && disabled,
   });
 
-  if (type === ButtonType.Link && href) {
+  if (btnType === ButtonType.Link && href) {
     return (
-      <a className={btnClass} href={href}>
+      <a className={btnClass} href={href} {...restProps}>
         {children}
       </a>
     );
   }
 
   return (
-    <button className={btnClass} disabled={disabled}>
+    <button className={btnClass} disabled={disabled} {...restProps}>
       {children}
     </button>
   );
