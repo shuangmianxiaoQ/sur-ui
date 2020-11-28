@@ -1,5 +1,6 @@
-import { createContext, CSSProperties, FC, useState } from 'react';
+import { Children, cloneElement, createContext, CSSProperties, FC, FunctionComponentElement, useState } from 'react';
 import cx from 'classnames';
+import { MenuItemProps } from './menuItem';
 
 type MenuMode = 'horizontal' | 'vertical';
 type SelectCallback = (selectedIndex: number) => void;
@@ -35,9 +36,21 @@ const Menu: FC<MenuProps> = ({ className, style, mode = 'horizontal', defaultInd
     onSelect: handleSelect,
   };
 
+  const renderChildren = () => {
+    return Children.map(children, (child, index) => {
+      const childElement = child as FunctionComponentElement<MenuItemProps>;
+      const { displayName } = childElement.type;
+      if (displayName === 'MenuItem') {
+        return cloneElement(childElement, { index });
+      } else {
+        console.error('Warning: Menu has a children witch is a MenuItem component');
+      }
+    });
+  };
+
   return (
     <ul className={menuClass} style={style}>
-      <MenuContext.Provider value={passedContext}>{children}</MenuContext.Provider>
+      <MenuContext.Provider value={passedContext}>{renderChildren()}</MenuContext.Provider>
     </ul>
   );
 };

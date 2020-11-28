@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { MenuContext } from './menu';
 
 export interface MenuItemProps {
-  index: number;
+  index?: number;
   disabled?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -17,7 +17,7 @@ const MenuItem: FC<MenuItemProps> = ({ className, style, index, disabled, childr
   });
 
   const handleClick = () => {
-    !disabled && context.onSelect?.(index);
+    !disabled && typeof index === 'number' && context.onSelect?.(index);
   };
 
   return (
@@ -26,5 +26,7 @@ const MenuItem: FC<MenuItemProps> = ({ className, style, index, disabled, childr
     </li>
   );
 };
+
+MenuItem.displayName = 'MenuItem';
 
 export default MenuItem;

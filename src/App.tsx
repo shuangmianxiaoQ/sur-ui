@@ -6,9 +6,9 @@ function App() {
   return (
     <div>
       <Menu mode="vertical" defaultIndex={0} onSelect={(index) => alert(index)}>
-        <MenuItem index={0}>item 1</MenuItem>
-        <MenuItem index={1} disabled>item 2</MenuItem>
-        <MenuItem index={2}>item 3</MenuItem>
+        <MenuItem>item 1</MenuItem>
+        <MenuItem disabled>item 2</MenuItem>
+        <MenuItem>item 3</MenuItem>
       </Menu>
       <Button autoFocus className="custom">
         Button
