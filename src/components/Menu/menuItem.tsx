@@ -3,13 +3,13 @@ import cx from 'classnames';
 import { MenuContext } from './menu';
 
 export interface MenuItemProps {
-  index?: number;
+  index?: string;
   disabled?: boolean;
   className?: string;
   style?: CSSProperties;
 }
 
-const MenuItem: FC<MenuItemProps> = ({ className, style, index, disabled, children }) => {
+const MenuItem: FC<MenuItemProps> = ({ index, disabled, className, style, children }) => {
   const context = useContext(MenuContext);
   const classes = cx('menu-item', className, {
     disabled,
@@ -17,7 +17,7 @@ const MenuItem: FC<MenuItemProps> = ({ className, style, index, disabled, childr
   });
 
   const handleClick = () => {
-    !disabled && typeof index === 'number' && context.onSelect?.(index);
+    !disabled && typeof index === 'string' && context.onSelect?.(index);
   };
 
   return (

@@ -3,36 +3,50 @@ import cx from 'classnames';
 import { MenuItemProps } from './menuItem';
 
 type MenuMode = 'horizontal' | 'vertical';
-type SelectCallback = (selectedIndex: number) => void;
+type SelectCallback = (selectedIndex: string) => void;
 
 interface IMenuContext {
-  index: number;
+  index: string;
+  mode?: MenuMode;
+  defaultOpenSubMenus?: string[];
   onSelect?: SelectCallback;
 }
 
 export interface MenuProps {
   mode?: MenuMode;
-  defaultIndex?: number;
+  defaultIndex?: string;
+  defaultOpenSubMenus?: string[];
   className?: string;
   style?: CSSProperties;
   onSelect?: SelectCallback;
 }
 
-export const MenuContext = createContext<IMenuContext>({ index: 0 });
+export const MenuContext = createContext<IMenuContext>({ index: '0' });
 
-const Menu: FC<MenuProps> = ({ className, style, mode = 'horizontal', defaultIndex = 0, onSelect, children }) => {
+const Menu: FC<MenuProps> = ({
+  mode = 'horizontal',
+  defaultIndex = '0',
+  defaultOpenSubMenus = [],
+  className,
+  style,
+  onSelect,
+  children,
+}) => {
   const [currentActive, setActive] = useState(defaultIndex);
   const menuClass = cx('menu', className, {
+    'menu-horizontal': mode === 'horizontal',
     'menu-vertical': mode === 'vertical',
   });
 
-  const handleSelect = (index: number) => {
+  const handleSelect = (index: string) => {
     setActive(index);
     onSelect?.(index);
   };
 
   const passedContext: IMenuContext = {
     index: currentActive,
+    mode,
+    defaultOpenSubMenus,
     onSelect: handleSelect,
   };
 
@@ -40,10 +54,10 @@ const Menu: FC<MenuProps> = ({ className, style, mode = 'horizontal', defaultInd
     return Children.map(children, (child, index) => {
       const childElement = child as FunctionComponentElement<MenuItemProps>;
       const { displayName } = childElement.type;
-      if (displayName === 'MenuItem') {
-        return cloneElement(childElement, { index });
+      if (displayName === 'MenuItem' || displayName === 'SubMenu') {
+        return cloneElement(childElement, { index: String(index) });
       } else {
-        console.error('Warning: Menu has a children witch is a MenuItem component');
+        console.error('Warning: Menu has a child witch is a MenuItem or SubMenu component');
       }
     });
   };
