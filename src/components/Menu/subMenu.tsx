@@ -8,9 +8,11 @@ import {
   useContext,
   useState,
 } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import cx from 'classnames';
 import { MenuContext } from './menu';
 import { MenuItemProps } from './menuItem';
+import Icon from '../Icon/icon';
 
 export interface SubMenuProps {
   index?: string;
@@ -25,6 +27,8 @@ const SubMenu: FC<SubMenuProps> = ({ index, title, className, style, children })
   const [menuOpen, setOpen] = useState(isOpened);
   const classes = cx('menu-item', 'submenu-item', className, {
     active: context.index === index,
+    'is-open': menuOpen,
+    'is-vertical': context.mode === 'vertical',
   });
   let timer: any;
 
@@ -45,16 +49,18 @@ const SubMenu: FC<SubMenuProps> = ({ index, title, className, style, children })
     });
 
     return (
-      <ul className={subMenuClass}>
-        {Children.map(children, (child, i) => {
-          const childElement = child as FunctionComponentElement<MenuItemProps>;
-          if (childElement.type.displayName === 'MenuItem') {
-            return cloneElement(childElement, { index: `${index}-${i}` });
-          } else {
-            console.error('Warning: SubMenu has a child whitch is a MenuItem component');
-          }
-        })}
-      </ul>
+      <CSSTransition in={menuOpen} timeout={3000} classNames="zoom-in-top" unmountOnExit>
+        <ul className={subMenuClass}>
+          {Children.map(children, (child, i) => {
+            const childElement = child as FunctionComponentElement<MenuItemProps>;
+            if (childElement.type.displayName === 'MenuItem') {
+              return cloneElement(childElement, { index: `${index}-${i}` });
+            } else {
+              console.error('Warning: SubMenu has a child whitch is a MenuItem component');
+            }
+          })}
+        </ul>
+      </CSSTransition>
     );
   };
 
@@ -67,6 +73,7 @@ const SubMenu: FC<SubMenuProps> = ({ index, title, className, style, children })
     >
       <div className="submenu-title" onClick={context.mode === 'vertical' ? handleClick : undefined}>
         {title}
+        <Icon icon="angle-down" className="arrow-icon" />
       </div>
       {renderChildren()}
     </li>
