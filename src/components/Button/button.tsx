@@ -1,17 +1,8 @@
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC, ReactNode } from 'react';
 import cx from 'classnames';
 
-export enum ButtonType {
-  Primary = 'primary',
-  Default = 'default',
-  Danger = 'danger',
-  Link = 'link',
-}
-
-export enum ButtonSize {
-  Large = 'lg',
-  Small = 'sm',
-}
+export type ButtonType = 'primary' | 'default' | 'danger' | 'link';
+export type ButtonSize = 'lg' | 'sm';
 
 interface BaseButtonProps {
   className?: string;
@@ -28,7 +19,7 @@ export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>;
 
 const Button: FC<ButtonProps> = ({
   className,
-  btnType = ButtonType.Default,
+  btnType = 'default',
   size,
   href,
   disabled = false,
@@ -38,10 +29,10 @@ const Button: FC<ButtonProps> = ({
   const btnClass = cx('btn', className, {
     [`btn-${btnType}`]: btnType,
     [`btn-${size}`]: size,
-    disabled: btnType === ButtonType.Link && disabled,
+    disabled: btnType === 'link' && disabled,
   });
 
-  if (btnType === ButtonType.Link && href) {
+  if (btnType === 'link' && href) {
     return (
       <a className={btnClass} href={href} {...restProps}>
         {children}
