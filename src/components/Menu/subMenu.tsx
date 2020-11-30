@@ -49,6 +49,7 @@ const SubMenu: FC<SubMenuProps> = ({ index, title, className, style, children })
     });
 
     return (
+      // TODO: appear prop
       <CSSTransition in={menuOpen} timeout={3000} classNames="zoom-in-top" unmountOnExit>
         <ul className={subMenuClass}>
           {Children.map(children, (child, i) => {

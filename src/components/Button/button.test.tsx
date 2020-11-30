@@ -2,6 +2,7 @@ import { fireEvent, render } from '@testing-library/react';
 import Button, { ButtonProps } from './button';
 
 const defaultProps = {
+  // Mock Function
   onClick: jest.fn(),
 };
 
@@ -24,6 +25,7 @@ describe('test Button component', () => {
     expect(element.tagName).toEqual('BUTTON');
     expect(element).toHaveClass('btn btn-default');
     expect(element.disabled).toBeFalsy();
+    // 模拟点击事件
     fireEvent.click(element);
     expect(defaultProps.onClick).toHaveBeenCalled();
   });
